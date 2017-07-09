@@ -28,10 +28,12 @@
            :library lib
            :cellar (io/file prefix "Cellar")
            :cache (first-existing
-                      [(str (System/getProperty "user.home")
-                            /Library/Caches/Homebrew)
+                      [(io/file (System/getProperty "user.home")
+                                "Library/Caches/Homebrew")
                        ;; safe default
-                       (io/file "/tmp")])}
+                       (io/file "/tmp")])
+
+           :no-compat "1"}
      :load-paths [(str lib-path)]}))
 
 (defn- mk-env-var
@@ -44,7 +46,8 @@
        (map (fn [[k v]]
               (format "'HOMEBREW_%s' => '%s'" (mk-env-var k) v)))
        (cs/join ",")
-       (format "ENV.update({%s})\nrequire 'global'\n")))
+       (format "ENV.update({%s})
+                require 'global'\n")))
 
 (defn mk-executor
   []
