@@ -21,13 +21,17 @@
 
         lib (io/file prefix "Library")
         lib-path (io/file lib "Homebrew")]
+
     {:env {:brew-file brew-file
            :prefix prefix
            :repository repo
            :library lib
            :cellar (io/file prefix "Cellar")
-           :cache "/tmp" ; TODO use the correct value
-           }
+           :cache (first-existing
+                      [(str (System/getProperty "user.home")
+                            /Library/Caches/Homebrew)
+                       ;; safe default
+                       (io/file "/tmp")])}
      :load-paths [(str lib-path)]}))
 
 (defn- mk-env-var
