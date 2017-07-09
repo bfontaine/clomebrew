@@ -1,7 +1,3 @@
-(ns clojure-brew.core-test
+(ns clomebrew.core-test
   (:require [clojure.test :refer :all]
-            [clojure-brew.core :refer :all]))
-
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+            [clomebrew.core :refer :all]))
