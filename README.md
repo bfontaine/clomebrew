@@ -1,14 +1,16 @@
-# clojure-brew
+# clomebrew
 
-A Clojure library designed to ... well, that part is up to you.
+**Clomebrew** brings [Homebrew](https://brew.sh/) to Clojure.
 
 ## Usage
+
+You need to already have a working Homebrew installation.
 
 FIXME
 
 ## License
 
-Copyright © 2017 FIXME
+Copyright © 2017 Baptiste Fontaine
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.

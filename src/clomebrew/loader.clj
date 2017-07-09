@@ -1,4 +1,4 @@
-(ns clojure-brew.loader
+(ns clomebrew.loader
   (:require [clojure.string :as cs]
             [clojure.java.io :as io])
   (:import [org.jruby.embed ScriptingContainer]))
@@ -15,8 +15,8 @@
                        (map #(io/file % "brew"))
                        first-existing)
 
-        prefix (-> brew-file .getParent .getParent)
-        repo (some #(.exists (io/file % ".git"))
+        prefix (.getCanonicalPath (io/file brew-file "../.."))
+        repo (some #(when (.exists (io/file % ".git")) %)
                    [prefix (io/file prefix "Homebrew")])
 
         lib (io/file prefix "Library")
@@ -28,19 +28,19 @@
            :cellar (io/file prefix "Cellar")
            :cache "/tmp" ; TODO use the correct value
            }
-     :load-paths [lib-path]}))
+     :load-paths [(str lib-path)]}))
 
 (defn- mk-env-var
   [k]
-  (-> k str (cs/replace #"-" "_") (cs/upper-case)))
+  (-> k name (cs/replace #"-" "_") (cs/upper-case)))
 
 (defn mk-env-init-code
-  [{:keys [env]}]
+  [env]
   (->> env
        (map (fn [[k v]]
-              (format "\"%s\" => \"%s\"" (mk-env-var k) v)))
+              (format "\"HOMEBREW_%s\" => \"%s\"" (mk-env-var k) v)))
        (cs/join ",")
-       (format "ENV.update({%s})\n")))
+       (format "ENV.update({%s}); require\"global\";")))
 
 (defn mk-executer
   []
@@ -53,4 +53,4 @@
   [ex ^String code]
   (let [{:keys [sc init]} ex
         code (str init code)]
-    (. ex runScriptlet code)))
+    (. sc runScriptlet code)))
