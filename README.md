@@ -6,8 +6,6 @@
 
 You need to already have a working Homebrew installation.
 
-FIXME
-
 ## License
 
 Copyright © 2017 Baptiste Fontaine

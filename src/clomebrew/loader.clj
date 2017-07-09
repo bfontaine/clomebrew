@@ -38,11 +38,11 @@
   [env]
   (->> env
        (map (fn [[k v]]
-              (format "\"HOMEBREW_%s\" => \"%s\"" (mk-env-var k) v)))
+              (format "'HOMEBREW_%s' => '%s'" (mk-env-var k) v)))
        (cs/join ",")
-       (format "ENV.update({%s}); require\"global\";")))
+       (format "ENV.update({%s})\nrequire 'global'\n")))
 
-(defn mk-executer
+(defn mk-executor
   []
   (let [{:keys [env load-paths]} (mk-env)]
     {:sc (doto (ScriptingContainer.)
