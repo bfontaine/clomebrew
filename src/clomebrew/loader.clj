@@ -40,14 +40,17 @@
   [k]
   (-> k name (cs/replace #"-" "_") (cs/upper-case)))
 
+(def ^:private env-template-code
+  (-> "clomebrew_init.rb" io/resource slurp))
+
 (defn mk-env-init-code
   [env]
   (->> env
        (map (fn [[k v]]
               (format "'HOMEBREW_%s' => '%s'" (mk-env-var k) v)))
        (cs/join ",")
-       (format "ENV.update({%s})
-                require 'global'\n")))
+       (format "{%s}")
+       (cs/replace env-template-code #"DEFAULT_CLOMEBREW_ENV")))
 
 (defn mk-executor
   []
