@@ -2,36 +2,7 @@ ENV.update(DEFAULT_CLOMEBREW_ENV)
 
 require "global"
 
-# Kernel.fork monkeypatching
-# based off https://stackoverflow.com/q/19102575/735926
-require "ffi"
-
-module Exec
-  extend FFI::Library
-  ffi_lib FFI::Library::LIBC
-  attach_function :fork, [], :int
-end
-
-module Process
-  def fork
-    pid = Exec.fork
-    if pid.zero?
-      yield if block_given?
-      return
-    else
-      return pid
-    end
-  end
-end
-
-module Kernel
-  def fork
-    Process.fork
-  end
-end
-# /Kernel.fork monkeypatching
-
-# monkeypatch Utils.popen not to use IO.popen with a block
+# monkeypatch Utils.popen not to use IO.popen("-") and thus not to fork
 require "utils/popen"
 
 module Utils
