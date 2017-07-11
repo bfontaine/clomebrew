@@ -52,15 +52,24 @@
        (format "{%s}")
        (cs/replace env-template-code #"DEFAULT_CLOMEBREW_ENV")))
 
+(defrecord Executor [sc init])
+
 (defn mk-executor
   []
   (let [{:keys [env load-paths]} (mk-env)]
-    {:sc (doto (ScriptingContainer.)
-           (.setLoadPaths load-paths))
-     :init (mk-env-init-code env)}))
+    (map->Executor
+      {:sc (doto (ScriptingContainer.)
+             (.setLoadPaths load-paths))
+       :init (mk-env-init-code env)})))
 
 (defn exec
-  [ex ^String code]
+  [^Executor ex ^String code]
   (let [{:keys [sc init]} ex
         code (str init code)]
     (. sc runScriptlet code)))
+
+(defn bind
+  ^Executor
+  [^Executor ex ^String k ^String v]
+  (.put (:sc ex) k v)
+  ex)
