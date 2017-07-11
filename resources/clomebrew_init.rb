@@ -11,9 +11,9 @@ module Utils
       if pipe
         return pipe.read unless block_given?
         yield pipe
-        # else
-        #     $stderr.reopen("/dev/null", "w")
-        #     exec(*args)
+      else
+        $stderr.reopen("/dev/null", "w")
+        exec(*args)
       end
     end
   end
@@ -22,6 +22,7 @@ end
 
 # monkeypatch Formulary.ensure_utf8_encoding to work around a JRuby IO issue
 # https://github.com/jruby/jruby/issues/4712
+# Fixed in JRuby 9.2.0.0
 require "formulary"
 
 module Formulary
@@ -31,3 +32,6 @@ module Formulary
   end
 end
 # /Formulary monkeypatch
+
+# this one is useful for e.g. Formula["foo"]
+require "formula"
