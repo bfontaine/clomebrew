@@ -10,6 +10,7 @@
   (cl/mk-executor))
 
 (defn formula
+  "Retrieve a formula as a map"
   [^Executor e formula-name]
   (-> e
       (cl/bind "f" formula-name)
@@ -20,6 +21,7 @@
 ;; Commands
 
 (defn doctor
+  "Run the 'doctor' Homebrew command"
   [^Executor e]
   (-> e
       ;; we need to require more stuff because Homebrew assumes some modules
