@@ -17,6 +17,8 @@ clomebrew_os =
   end
 
 unless clomebrew_os.nil?
+  # Don't print the const_set warning.
+  # See https://github.com/bfontaine/silent/blob/3538cab/lib/silent.rb
   stderr_ = $stderr
   begin
     $stderr = StringIO.new
