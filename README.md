@@ -78,6 +78,12 @@ automatically find your Homebrew installation from your `PATH`.
 
 This is equivalent to calling `Formula["git"].to_hash` in Ruby.
 
+#### Calling `brew doctor`
+
+```clojure
+(hb/doctor brew)
+```
+
 ## License
 
 Copyright © 2017 Baptiste Fontaine
