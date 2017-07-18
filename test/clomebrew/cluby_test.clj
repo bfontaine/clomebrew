@@ -1,6 +1,7 @@
 (ns clomebrew.cluby-test
   (:require [clojure.test :refer :all]
-            [clomebrew.cluby :as cluby]))
+            [clomebrew.cluby :as cluby])
+  (:import [org.jruby.embed ScriptingContainer]))
 
 (deftest basic-values->clj
   (testing "integers"
@@ -18,3 +19,20 @@
   (testing "nil"
     (are [x] (= (cluby/->clj x) x)
          nil)))
+
+(deftest basic-ruby-values->clj
+  (let [sc (ScriptingContainer.)]
+    (are [expected code] (= expected (cluby/->clj (. sc runScriptlet code)))
+         0       "0"
+         1       "1"
+         :foo    ":foo"
+         "hello" "'hello'"
+         nil     "nil"
+         true    "true")))
+
+(deftest ruby-collections->clj
+  (let [sc (ScriptingContainer.)]
+    (are [expected code] (= expected (cluby/->clj (. sc runScriptlet code)))
+         [1 2 3] "[1, 2, 3]"
+         {:a 42} "{:a => 42}"
+         {:a {:b 1 :c [2 3]}} "{:a => {:b => 1, :c => [2, 3]}}")))
