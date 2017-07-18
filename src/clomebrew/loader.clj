@@ -1,11 +1,23 @@
 (ns clomebrew.loader
   (:require [clojure.string :as cs]
             [clojure.java.io :as io])
-  (:import [org.jruby.embed ScriptingContainer]))
+  (:import [org.jruby.embed ScriptingContainer]
+           [java.nio.file Paths]))
 
 (defn- first-existing
   [xs]
   (some #(when (.exists %) %) xs))
+
+(defn- normalized-path
+  "Normalize an io/file's path without resolving symlinks (as does
+   getCanonicalPath)."
+  [f]
+  (-> f
+      .getPath
+      (Paths/get (into-array [""]))
+      .normalize
+      str))
+
 
 (defn mk-env
   []
@@ -15,11 +27,12 @@
                        (map #(io/file % "brew"))
                        first-existing)
 
-        prefix (.getCanonicalPath (io/file brew-file "../.."))
+        prefix (normalized-path (io/file brew-file "../.."))
+
         repo (some #(when (.exists (io/file % ".git")) %)
                    [prefix (io/file prefix "Homebrew")])
 
-        lib (io/file prefix "Library")
+        lib (io/file repo "Library")
         lib-path (io/file lib "Homebrew")]
 
     {:env {:brew-file brew-file
