@@ -17,6 +17,17 @@
       cluby/->clj
       keywordize-keys))
 
+;; Commands
+
+(defn doctor
+  [^Executor e]
+  (-> e
+      ;; we need to require more stuff because Homebrew assumes some modules
+      ;; are always available.
+      (cl/exec "require 'cmd/doctor'
+                Homebrew.doctor")
+      cluby/->clj))
+
 (defn -main
   [& _]
   (let [e (cl/mk-executor)]
