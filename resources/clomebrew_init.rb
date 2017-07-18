@@ -1,5 +1,32 @@
 ENV.update(DEFAULT_CLOMEBREW_ENV)
 
+# Homebrew's OS detection is broken on JRuby (TODO submit a PR) because it
+# relies on RUBY_PLATFORM.
+# See https://stackoverflow.com/a/13586108/735926.
+require "rbconfig"
+
+# TODO: use a fuller value to include e.g. hardware stuff
+clomebrew_os =
+  case RbConfig::CONFIG["host_os"]
+  when /darwin|mac os/
+    # Homebrew assumes this is set
+    ENV["HOMEBREW_MACOS_VERSION"] = `/usr/bin/sw_vers -productVersion 2>&1`
+    "darwin"
+  when /linux/
+    "linux"
+  end
+
+unless clomebrew_os.nil?
+  stderr_ = $stderr
+  begin
+    $stderr = StringIO.new
+    Object.send(:const_set, "RUBY_PLATFORM", clomebrew_os)
+  ensure
+    $stderr = stderr_
+  end
+end
+
+# Homebrew assumes this is always available
 require "global"
 
 # monkeypatch Utils.popen not to use IO.popen("-") and thus not to fork
@@ -32,6 +59,16 @@ module Formulary
   end
 end
 # /Formulary monkeypatch
+
+# monkeypatch quiet_system not to use fork
+require "utils"
+require "shellwords"
+
+def quiet_system(*args)
+  `#{Shellwords.join(args)} 2>&1` # capture stdin & stderr
+  $?.success?
+end
+# /monkeypatch quiet_system
 
 # this one is useful for e.g. Formula["foo"]
 require "formula"
