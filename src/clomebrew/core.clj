@@ -18,6 +18,15 @@
       cluby/->clj
       keywordize-keys))
 
+(defn- getenv
+  [^Executor e k]
+  (-> e :env k))
+
+(defn cache [e]      (getenv e :cache))
+(defn cellar [e]     (getenv e :cellar))
+(defn prefix [e]     (getenv e :prefix))
+(defn repository [e] (getenv e :repository))
+
 ;; Commands
 
 (defn doctor
