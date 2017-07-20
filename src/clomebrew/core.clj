@@ -14,10 +14,18 @@
   "Retrieve a formula as a map"
   [^Executor e formula-name]
   (-> e
-      (cl/bind "f" formula-name)
-      (cl/exec "Formula[f].to_hash")
+      (cl/bind "__clomebrew_f" formula-name)
+      (cl/exec "Formula[__clomebrew_f].to_hash")
       cluby/->clj
       keywordize-keys))
+
+(defn formula-path
+  [^Executor e formula-name]
+  (-> e
+      ;; TODO factorize this code somewhere
+      (cl/bind "__clomebrew_f" formula-name)
+      (cl/exec "Formula[__clomebrew_f].path.to_s")
+      cluby/->clj))
 
 (defn- getenv
   [^Executor e k]
