@@ -1,5 +1,6 @@
 (ns clomebrew.core
   (:require [clojure.walk :refer [keywordize-keys]]
+            [clojure.string :as cs]
             [clomebrew [loader :as cl]
                        [cluby :as cluby]])
   (:import [clomebrew.loader Executor]))
@@ -29,10 +30,17 @@
 
 ;; Commands
 
+(defn- official-cmd
+  "Run an arbitrary official Homebrew command. It doesn't check the validity of
+   that command and thus can execute arbitrary Ruby code."
+  [^Executor e cmd]
+  (let [module-name (format "'cmd/%s'" cmd)
+        method-name (cs/replace cmd #"-" "_")]
+    (-> e
+        (cl/exec (format "require %s; Homebrew.%s" module-name method-name))
+        cluby/->clj)))
+
 (defn doctor
   "Run the 'doctor' Homebrew command"
   [^Executor e]
-  (-> e
-      (cl/exec "require 'cmd/doctor'
-                Homebrew.doctor")
-      cluby/->clj))
+  (official-cmd e "doctor"))
