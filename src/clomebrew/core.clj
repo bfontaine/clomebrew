@@ -44,3 +44,8 @@
   "Run the 'doctor' Homebrew command"
   [^Executor e]
   (official-cmd e "doctor"))
+
+(defn env
+  "Run the '--env' Homebrew command"
+  [^Executor e]
+  (official-cmd e "--env"))
