@@ -31,10 +31,29 @@
   [^Executor e k]
   (-> e :env k))
 
-(defn cache [e]      (getenv e :cache))
-(defn cellar [e]     (getenv e :cellar))
-(defn prefix [e]     (getenv e :prefix))
-(defn repository [e] (getenv e :repository))
+(defn cache
+  "Return Homebrew's cache directory. This is equivalent to capturing the
+   output of `brew --cache`."
+  [e]
+  (getenv e :cache))
+
+(defn cellar
+  "Return Homebrew's Cellar directory. This is equivalent to capturing the
+   output of `brew --cellar`."
+  [e]
+  (getenv e :cellar))
+
+(defn prefix
+  "Return Homebrew's prefix directory. This is equivalent to capturing the
+   output of `brew --prefix`."
+  [e]
+  (getenv e :prefix))
+
+(defn repository
+  "Return Homebrew's repository directory. This is equivalent to capturing the
+   output of `brew --repository`."
+  [e]
+  (getenv e :repository))
 
 ;; Commands
 
