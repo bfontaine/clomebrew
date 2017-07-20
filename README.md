@@ -84,6 +84,21 @@ This is equivalent to calling `Formula["git"].to_hash` in Ruby.
 (hb/doctor brew)
 ```
 
+#### Get a formula’s content
+
+```clojure
+(slurp (hb/formula-path brew "git")
+```
+
+#### Get Homebrew’s prefix/repo/cellar/cache paths
+
+```clojure
+(hb/prefix brew) ;; e.g. "/usr/local"
+(hb/repository brew) ;; e.g. "/usr/local/Homebrew"
+(hb/cellar brew) ;; e.g. "/usr/local/Cellar"
+(hb/cache brew) ;; e.g. "/Users/you/Library/Caches/Homebrew"
+```
+
 ## License
 
 Copyright © 2017 Baptiste Fontaine
