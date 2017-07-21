@@ -2,6 +2,7 @@
   (:require [clojure.walk :refer [keywordize-keys]]
             [clojure.string :as cs]
             [clomebrew [loader :as cl]
+                       [formula :as f]
                        [cluby :as cluby]])
   (:import [clomebrew.loader Executor]))
 
@@ -11,21 +12,16 @@
   (cl/mk-executor))
 
 (defn formula
-  "Retrieve a formula as a map"
-  [^Executor e formula-name]
-  (-> e
-      (cl/bind "__clomebrew_f" formula-name)
-      (cl/exec "Formula[__clomebrew_f].to_hash")
-      cluby/->clj
-      keywordize-keys))
+  "Retrieve a formula. Use clomebrew.formula/by-name instead."
+  {:added "0.0.1" :deprecated "0.0.2"}
+  [e formula-name]
+  (f/by-name e formula-name))
 
 (defn formula-path
-  [^Executor e formula-name]
-  (-> e
-      ;; TODO factorize this code somewhere
-      (cl/bind "__clomebrew_f" formula-name)
-      (cl/exec "Formula[__clomebrew_f].path.to_s")
-      cluby/->clj))
+  "Retrieve a formula's filepath. Use clomebrew.formula/path instead."
+  {:added "0.0.1" :deprecated "0.0.2"}
+  [e formula-name]
+  (f/path (formula e formula-name)))
 
 (defn- getenv
   [^Executor e k]
