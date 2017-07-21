@@ -27,6 +27,11 @@ automatically find your Homebrew installation from your `PATH`.
 
 ### How To
 
+The documentation below is only relevant for the bleeding edge. Refer to the
+[0.0.1 documentation][doc001] instead.
+
+[doc001]: https://github.com/bfontaine/clomebrew/tree/0.0.1#examples
+
 #### Get a Formula
 
 ```clojure
