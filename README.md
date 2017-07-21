@@ -19,8 +19,10 @@ automatically find your Homebrew installation from your `PATH`.
 
 ```clojure
 (ns your-ns
-  (:require [clomebrew.core :as hb]
-            [clomebrew.formula :as hf]))
+  (:require [clomebrew [core :as hb] ;; core API
+                       [formula :as hf] ;; formulae
+                       [tap :as ht] ;; taps
+                    ]))
 
 (def brew (hb/new-brew))
 ```
@@ -111,6 +113,38 @@ This is equivalent to calling `Formula["git"].to_hash` in Ruby.
 
 ```clojure
 (hb/tap-names brew) ;; => e.g. ("homebrew/core" "homebrew/php" ...)
+```
+
+#### Get a tap
+
+```clojure
+(def core-tap (ht/by-name "homebrew/core"))
+
+;; Convert the tap to a map
+(ht/->map core-tap)
+;; returned map:
+{:command_files ()
+ :custom_remote -1
+ ;; be aware it includes *ALL* the formula files.
+ ;; That's a 4200+ -long list for homebrew/core
+ :formula_files ("/usr/local/Homebrew/.../homebrew-core/Formula/a2ps.rb"
+                 "/usr/local/Homebrew/.../homebrew-core/Formula/a52dec.rb"
+                 "/usr/local/Homebrew/.../homebrew-core/Formula/aacgain.rb"
+                 "/usr/local/Homebrew/.../homebrew-core/Formula/aalib.rb"
+                 ...)
+ :formula_names ("a2ps"
+                 "a52dec"
+                 "aacgain"
+                 ...)
+ :installed true
+ :name "homebrew/core"
+ :official true
+ :path "/usr/local/Homebrew/.../homebrew-core"
+ :pinned false
+ :private true
+ :remote "git@github.com:Homebrew/homebrew-core.git"
+ :repo "core"
+ :user "Homebrew"}
 ```
 
 #### Run `brew doctor`
