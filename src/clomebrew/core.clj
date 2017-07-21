@@ -1,6 +1,5 @@
 (ns clomebrew.core
-  (:require [clojure.walk :refer [keywordize-keys]]
-            [clojure.string :as cs]
+  (:require [clojure.string :as cs]
             [clomebrew [loader :as cl]
                        [formula :as f]
                        [cluby :as cluby]])

@@ -31,7 +31,5 @@
 
 (defn ->map
   "Convert a formula to a map"
-  [f]
-  (-> (bind-formula f)
-      (cl/exec (format "%s.to_hash" var-name))
-      cluby/->clj))
+  [{:keys [f ex]}]
+  (cl/obj->map ex f))

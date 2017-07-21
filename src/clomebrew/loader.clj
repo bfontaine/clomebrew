@@ -1,8 +1,11 @@
 (ns clomebrew.loader
   "Low-level API"
-  (:require [clojure.string :as cs]
-            [clojure.java.io :as io])
+  (:require [clojure.walk :refer [keywordize-keys]]
+            [clojure.string :as cs]
+            [clojure.java.io :as io]
+            [clomebrew.cluby :as cluby])
   (:import [org.jruby.embed ScriptingContainer]
+           [org.jruby RubyHash]
            [java.io File]
            [java.nio.file Paths]))
 
@@ -93,6 +96,15 @@
 
 (defn bind
   ^Executor
-  [^Executor ex ^String k ^String v]
-  (.put ^ScriptingContainer (:sc ex) k v)
+  [{:keys [sc] :as ex} ^String k ^String v]
+  (.put ^ScriptingContainer sc k v)
   ex)
+
+(defn obj->map
+  "Call to_hash on an object and return it as a Clojure map with keywordized
+   keys."
+  [{:keys [sc]} obj]
+  (-> (.callMethod ^ScriptingContainer sc
+                   obj "to_hash" RubyHash)
+      cluby/->clj
+      keywordize-keys))
