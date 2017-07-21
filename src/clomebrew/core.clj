@@ -6,26 +6,23 @@
                        [cluby :as cluby]])
   (:import [clomebrew.loader Executor]))
 
+(defn- getenv
+  [^Executor e k]
+  (-> e :env k))
+
 (defn new-brew
+  "Create a new (home)brew instance"
   ^Executor
   []
   (cl/mk-executor))
 
-(defn formula
-  "Retrieve a formula. Use clomebrew.formula/by-name instead."
-  {:added "0.0.1" :deprecated "0.0.2"}
-  [e formula-name]
-  (f/by-name e formula-name))
+(defn tap-names
+  [e]
+  (-> e
+      (cl/exec "require 'tap'; Tap.names")
+      cluby/->clj))
 
-(defn formula-path
-  "Retrieve a formula's filepath. Use clomebrew.formula/path instead."
-  {:added "0.0.1" :deprecated "0.0.2"}
-  [e formula-name]
-  (f/path (formula e formula-name)))
-
-(defn- getenv
-  [^Executor e k]
-  (-> e :env k))
+;; Environment API
 
 (defn cache
   "Return Homebrew's cache directory. This is equivalent to capturing the
@@ -72,3 +69,18 @@
   "Run the '--env' Homebrew command"
   [^Executor e]
   (official-cmd e "--env"))
+
+
+;; -- deprecated API ---------------------------------------------------------
+
+(defn formula
+  "Retrieve a formula. Use clomebrew.formula/by-name instead."
+  {:added "0.0.1" :deprecated "0.0.2"}
+  [e formula-name]
+  (f/by-name e formula-name))
+
+(defn formula-path
+  "Retrieve a formula's filepath. Use clomebrew.formula/path instead."
+  {:added "0.0.1" :deprecated "0.0.2"}
+  [e formula-name]
+  (f/path (formula e formula-name)))
