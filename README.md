@@ -2,7 +2,7 @@
 
 **Clomebrew** brings [Homebrew](https://brew.sh/) to Clojure.
 
-**Warning:** This is highly experimental, don’t depend on it for serious stuff.
+**Warning:** This is highly experimental, don’t depend on it for serious stuff. Also, the API is not yet stabilised.
 
 ## Usage
 
