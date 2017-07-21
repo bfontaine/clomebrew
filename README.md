@@ -25,7 +25,7 @@ automatically find your Homebrew installation from your `PATH`.
 (def brew (hb/new-brew))
 ```
 
-### Examples
+### How To
 
 #### Get a Formula
 
@@ -87,12 +87,6 @@ automatically find your Homebrew installation from your `PATH`.
 
 This is equivalent to calling `Formula["git"].to_hash` in Ruby.
 
-#### Run `brew doctor`
-
-```clojure
-(hb/doctor brew)
-```
-
 #### Get a formula’s content
 
 ```clojure
@@ -106,6 +100,18 @@ This is equivalent to calling `Formula["git"].to_hash` in Ruby.
 (hb/repository brew) ;; e.g. "/usr/local/Homebrew"
 (hb/cellar brew) ;; e.g. "/usr/local/Cellar"
 (hb/cache brew) ;; e.g. "/Users/you/Library/Caches/Homebrew"
+```
+
+#### Get installed taps
+
+```clojure
+(hb/tap-names brew) ;; => e.g. ("homebrew/core" "homebrew/php" ...)
+```
+
+#### Run `brew doctor`
+
+```clojure
+(hb/doctor brew)
 ```
 
 ## License
