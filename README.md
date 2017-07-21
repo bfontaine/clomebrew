@@ -11,7 +11,7 @@ You need to already have a working Homebrew installation.
 Add the following dependency to your `project.clj`:
 
 ```clojure
-[clomebrew  "0.0.1"] ;; WARNING clomebrew hasn't been released yet
+[clomebrew  "0.0.1"]
 ```
 
 Then import `clomebrew.core` and create your `brew` instance. It’ll
@@ -89,7 +89,7 @@ This is equivalent to calling `Formula["git"].to_hash` in Ruby.
 #### Get a formula’s content
 
 ```clojure
-(slurp (hb/formula-path brew "git")
+(slurp (hb/formula-path brew "git"))
 ```
 
 #### Get Homebrew’s prefix/repo/cellar/cache paths
