@@ -2,6 +2,8 @@
 
 **Clomebrew** brings [Homebrew](https://brew.sh/) to Clojure.
 
+**Warning:** This is highly experimental, don’t depend on it for serious stuff.
+
 ## Usage
 
 You need to already have a working Homebrew installation.
@@ -9,7 +11,7 @@ You need to already have a working Homebrew installation.
 Add the following dependency to your `project.clj`:
 
 ```clojure
-[clomebrew  "0.1.0"] ;; WARNING clomebrew hasn't been released yet
+[clomebrew  "0.0.1"] ;; WARNING clomebrew hasn't been released yet
 ```
 
 Then import `clomebrew.core` and create your `brew` instance. It’ll
