@@ -28,3 +28,10 @@
   (-> (bind-formula f)
       (cl/exec (format "%s.path.to_s" var-name))
       cluby/->clj))
+
+(defn ->map
+  "Convert a formula to a map"
+  [f]
+  (-> (bind-formula f)
+      (cl/exec (format "%s.to_hash" var-name))
+      cluby/->clj))

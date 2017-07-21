@@ -19,7 +19,8 @@ automatically find your Homebrew installation from your `PATH`.
 
 ```clojure
 (ns your-ns
-  (:require [clomebrew.core :as hb]))
+  (:require [clomebrew.core :as hb]
+            [clomebrew.formula :as hf]))
 
 (def brew (hb/new-brew))
 ```
@@ -29,8 +30,14 @@ automatically find your Homebrew installation from your `PATH`.
 #### Get a Formula
 
 ```clojure
-(hb/formula brew "git")
+(def git (hf/by-name brew "git"))
 
+;; you can also omit brew; it'll create an instance by itself
+(def git (hf/by-name "git"))
+
+
+;; convert the formula to a map:
+(hf/->map git)
 ;; returned map:
 {:name "git"
  :full_name "git"
@@ -54,11 +61,11 @@ automatically find your Homebrew installation from your `PATH`.
  :conflicts_with ()
 
  :bottle {:stable {:cellar "/usr/local/Cellar"
-                   :files {:el_capitan {:sha256 "11d...31"
+                   :files {:el_capitan {:sha256 "11d..."
                                         :url "https://.../git-2.13.2.el_capitan.bottle.tar.gz"}
-                           :sierra {:sha256 "ce6...54"
+                           :sierra {:sha256 "ce6..."
                                     :url "https://.../git-2.13.2.sierra.bottle.tar.gz"}
-                           :yosemite {:sha256 "2c4...c6"
+                           :yosemite {:sha256 "2c4..."
                                       :url "https://.../git-2.13.2.yosemite.bottle.tar.gz"}}
                    :prefix "/usr/local"
                    :rebuild 0
@@ -89,7 +96,7 @@ This is equivalent to calling `Formula["git"].to_hash` in Ruby.
 #### Get a formula’s content
 
 ```clojure
-(slurp (hb/formula-path brew "git"))
+(slurp (hf/path git))
 ```
 
 #### Get Homebrew’s prefix/repo/cellar/cache paths
