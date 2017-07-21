@@ -1,17 +1,19 @@
 (ns clomebrew.loader
+  "Low-level API"
   (:require [clojure.string :as cs]
             [clojure.java.io :as io])
   (:import [org.jruby.embed ScriptingContainer]
+           [java.io File]
            [java.nio.file Paths]))
 
 (defn- first-existing
   [xs]
-  (some #(when (.exists %) %) xs))
+  (some #(when (.exists ^File %) %) xs))
 
 (defn- normalized-path
   "Normalize an io/file's path without resolving symlinks (as does
    getCanonicalPath)."
-  [f]
+  [^File f]
   (-> f
       .getPath
       (Paths/get (into-array [""]))
@@ -87,10 +89,10 @@
   [^Executor ex ^String code]
   (let [{:keys [sc init]} ex
         code (str init code)]
-    (. sc runScriptlet code)))
+    (. ^ScriptingContainer sc runScriptlet code)))
 
 (defn bind
   ^Executor
   [^Executor ex ^String k ^String v]
-  (.put (:sc ex) k v)
+  (.put ^ScriptingContainer (:sc ex) k v)
   ex)

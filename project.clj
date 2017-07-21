@@ -7,4 +7,5 @@
                  [org.jruby/jruby-complete "9.1.12.0"]]
 
   :profiles {:dev {:source-paths ["dev"]
-                   :dependencies [[org.clojure/tools.namespace  "0.2.11"]]}})
+                   :dependencies [[org.clojure/tools.namespace  "0.2.11"]]
+                   :global-vars {*warn-on-reflection* true}}})
