@@ -59,7 +59,7 @@
   (-> k name (cs/replace #"-" "_") (cs/upper-case)))
 
 (def ^:private env-template-code
-  (-> "clomebrew_init.rb" io/resource slurp))
+  (-> "clomebrew/bootstrap.rb" io/resource slurp))
 
 (defn mk-env-init-code
   [env]
