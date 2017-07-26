@@ -1,4 +1,4 @@
-(defproject clomebrew "0.0.2"
+(defproject clomebrew "0.0.3-SNAPSHOT"
   :description "Homebrew bindings in Clojure"
   :url "https://github.com/bfontaine/clomebrew"
   :license {:name "Eclipse Public License"
