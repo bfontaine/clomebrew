@@ -1,11 +1,11 @@
 ENV.update(DEFAULT_CLOMEBREW_ENV)
 
-# Homebrew's OS detection is broken on JRuby (TODO submit a PR) because it
+# Homebrew's OS detection is broken on JRuby because it
 # relies on RUBY_PLATFORM.
 # See https://stackoverflow.com/a/13586108/735926.
+# PR: https://github.com/Homebrew/brew/pull/2951
 require "rbconfig"
 
-# TODO: use a fuller value to include e.g. hardware stuff
 clomebrew_os =
   case RbConfig::CONFIG["host_os"]
   when /darwin|mac os/
@@ -22,6 +22,7 @@ unless clomebrew_os.nil?
   stderr_ = $stderr
   begin
     $stderr = StringIO.new
+    # TODO: use a fuller value to include e.g. hardware stuff
     Object.send(:const_set, "RUBY_PLATFORM", clomebrew_os)
   ensure
     $stderr = stderr_
