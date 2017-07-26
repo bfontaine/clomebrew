@@ -11,7 +11,7 @@ You need to already have a working Homebrew installation.
 Add the following dependency to your `project.clj`:
 
 ```clojure
-[clomebrew  "0.0.1"]
+[clomebrew  "0.0.2"]
 ```
 
 Then import `clomebrew.core` and create your `brew` instance. It’ll
@@ -28,11 +28,6 @@ automatically find your Homebrew installation from your `PATH`.
 ```
 
 ### How To
-
-The documentation below is only relevant for the bleeding edge. Refer to the
-[0.0.1 documentation][doc001] instead.
-
-[doc001]: https://github.com/bfontaine/clomebrew/tree/0.0.1#examples
 
 #### Get a Formula
 
