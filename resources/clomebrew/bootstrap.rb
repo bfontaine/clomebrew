@@ -1,32 +1,10 @@
 ENV.update(DEFAULT_CLOMEBREW_ENV)
 
-# Homebrew's OS detection is broken on JRuby because it
-# relies on RUBY_PLATFORM.
-# See https://stackoverflow.com/a/13586108/735926.
-# PR: https://github.com/Homebrew/brew/pull/2951
 require "rbconfig"
 
-clomebrew_os =
-  case RbConfig::CONFIG["host_os"]
-  when /darwin|mac os/
-    # Homebrew assumes this is set
-    ENV["HOMEBREW_MACOS_VERSION"] = `/usr/bin/sw_vers -productVersion 2>&1`
-    "darwin"
-  when /linux/
-    "linux"
-  end
-
-unless clomebrew_os.nil?
-  # Don't print the const_set warning.
-  # See https://github.com/bfontaine/silent/blob/3538cab/lib/silent.rb
-  stderr_ = $stderr
-  begin
-    $stderr = StringIO.new
-    # TODO: use a fuller value to include e.g. hardware stuff
-    Object.send(:const_set, "RUBY_PLATFORM", clomebrew_os)
-  ensure
-    $stderr = stderr_
-  end
+if RbConfig::CONFIG["host_os"].include? "darwin"
+  # Homebrew assumes this is set
+  ENV["HOMEBREW_MACOS_VERSION"] = `/usr/bin/sw_vers -productVersion 2>&1`
 end
 
 # Homebrew assumes this is always available
