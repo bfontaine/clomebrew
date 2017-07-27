@@ -11,6 +11,14 @@
   [{:keys [f ex]}]
   (cl/bind ex var-name f))
 
+(defn all
+  "Return all formulae"
+  [^Executor e]
+  (-> e
+      (cl/exec "Formula.to_enum")
+      (cluby/->clj)
+      (#(map (fn [f] (map->Formula {:f f :ex e})) %))))
+
 (defn by-name
   "Retrieve a formula by its name"
   ([formula-name]

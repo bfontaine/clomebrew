@@ -1,6 +1,6 @@
 (ns clomebrew.cluby
   "JRuby->Clojure utilities"
-  (:import [org.jruby RubyHash RubyArray RubySymbol]))
+  (:import [org.jruby RubyHash RubyArray RubySymbol RubyEnumerator]))
 
 (defmulti ->clj class)
 
@@ -26,3 +26,8 @@
 (defmethod ->clj String [x] x)
 (defmethod ->clj Boolean [x] x)
 (defmethod ->clj nil [x] x)
+
+(defmethod ->clj RubyEnumerator
+  [^RubyEnumerator e]
+  ;(map ->clj (iterator-seq e)))
+  (iterator-seq e))
