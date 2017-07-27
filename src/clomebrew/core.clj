@@ -2,6 +2,7 @@
   (:require [clojure.string :as cs]
             [clomebrew [loader :as cl]
                        [formula :as f]
+                       [tap :as t]
                        [cluby :as cluby]])
   (:import [clomebrew.loader Executor]))
 
@@ -14,12 +15,6 @@
   ^Executor
   []
   (cl/mk-executor))
-
-(defn tap-names
-  [e]
-  (-> e
-      (cl/exec "require 'tap'; Tap.names")
-      cluby/->clj))
 
 ;; Environment API
 
@@ -83,3 +78,9 @@
   {:added "0.0.1" :deprecated "0.0.2"}
   [e formula-name]
   (f/path (formula e formula-name)))
+
+(defn tap-names
+  "Retrieve all installed tap names. Use clomebrew.tap/names instead."
+  {:added "0.0.2" :deprecated "0.0.3"}
+  [e]
+  (t/names e))

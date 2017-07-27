@@ -11,6 +11,13 @@
   [{:keys [t ex]}]
   (cl/bind ex var-name t))
 
+(defn names
+  "Retrieve all installed tap names."
+  [e]
+  (-> e
+      (cl/exec "require 'tap'; Tap.names")
+      cluby/->clj))
+
 (defn by-name
   "Retrieve a tap by its name"
   ([tap-name]
