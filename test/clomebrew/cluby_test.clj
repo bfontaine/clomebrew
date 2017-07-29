@@ -36,3 +36,11 @@
          [1 2 3] "[1, 2, 3]"
          {:a 42} "{:a => 42}"
          {:a {:b 1 :c [2 3]}} "{:a => {:b => 1, :c => [2, 3]}}")))
+
+(deftest ruby-range->clj
+  (let [sc (ScriptingContainer.)]
+    (is (= 55 (reduce + (cluby/->clj (. sc runScriptlet "(1..10)")))))))
+
+(deftest ruby-iterator->clj
+  (let [sc (ScriptingContainer.)]
+    (is (= 55 (reduce + (cluby/->clj (. sc runScriptlet "(1..10).lazy")))))))
